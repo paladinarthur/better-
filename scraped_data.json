@@ -1,0 +1,189 @@
+{
+    "general_tables": [],
+    "bullet_points": {
+        "Top Housing Loan Schemes & Offers": [
+            "Interest starts from 10.50% p.a onwards for credit scores below 600 for loans of up to Rs.30 lakh",
+            "Moratorium period of up to 3 years for construction or purchase of a home",
+            "Loan tenure of up to 30 years",
+            "For agriculturists, quarterly/half-yearly/annual repayments instead of EMI can be availed",
+            "Open to permanent employees of educational institutions and agriculturists with a yearly income of up to Rs.48,000 p.a."
+        ],
+        "Process to Apply for a Home Loan": [
+            "Loan Sanction -  Once the verification process has been completed, the loan will be sanctioned. The sanction letter will be provided and the loan amount will be deposited in the bank account."
+        ],
+        "Benefits of Availing a Home Loan": [
+            "Tax Benefits - Tax benefits can be availed in case you opt for a home loan."
+        ],
+        "Types of Home Loans in India": [
+            "Home Loans for NRIs - These home loans cater to the housing needs of NRIs in the country. They also include PIOs and OCIs."
+        ],
+        "Home Loan Eligibility": [
+            "A permanent residence",
+            "A rented residence where he/she has resided for at least a year prior to applying for a loan"
+        ],
+        "Documents Required for Home Loan": [
+            "Registered Agreement of Sale",
+            "Stamped Agreement of Sale",
+            "Allotment Letter",
+            "Occupancy Certificate in case the property is a ready-to-move-in property",
+            "Copy (blueprint) of the Approved Plan and Registered Development agreement of the builder",
+            "Conveyance Deed in case of a new property",
+            "Bank account statements indicating all payments made to the seller or builder"
+        ],
+        "Home Loan Fees and Charges": [
+            "Processing fees - This is a one-time non-refundable fee to be paid to the home loan provider after the loan application has been approved. The processing charge varies depending on the bank and the loan scheme you are applying for.",
+            "Prepayment charges - The Prepayment penalty is the fee you will have to pay the lender if you plan on repaying your home loan before the completion of the loan tenure.",
+            "Conversion fees - Some banks also charge a conversion fee when you switch to a different loan scheme to lower the interest rate associated with your current scheme.",
+            "Cheque dishonour charges - The fee is levied when the loan provider finds that a cheque issued by the borrower is dishonoured due to insufficient funds in the borrower’s account.",
+            "Fees on account of external opinion: In some cases, you should consult an external expert, such as a lawyer or a valuator, for their opinion on the loan. This fee should be paid directly to the concerned person, not the lending institution. This fee should be paid directly to the concerned person, not the lending institution.",
+            "Home insurance - The premium should be paid directly to the concerned company during the term to ensure the insurance policy runs during the home loan tenure.",
+            "Default charges - Loan providers also penalise delayed repayments, i.e. if you fail to make your Equated Monthly Instalments (EMIs) or Pre-EMIs on time. The defaulting charges vary from one bank to another.",
+            "Incidental charges - This charge covers the expenses incurred by the bank to recover dues from a borrower who has failed to make his monthly instalments on time.",
+            "Statutory/regulatory charges - The fee includes all costs associated with the Central Registry of Securitisation Asset Reconstruction and Security Interest of India (CERSAI), Memorandum of Entry and Deposit, and stamp duty. You can visit CERSAI to learn more about these charges.",
+            "Photocopy of documents - The fee is payable to the bank if you require a photocopy of your home loan documents for personal needs.",
+            "Change in loan term - Some banks also charge a nominal fee if you wish to change the tenure associated with your loan."
+        ],
+        "Home Loan Rejection": [
+            "Improve Credit Score - Improving the credit score will ensure that home loans will be provided at lower interest rates. You can pay the credit card bills and EMIs on time to improve the credit score."
+        ]
+    },
+    "home_loan_eligibility": {
+        "headers": [],
+        "rows": [
+            [
+                "Age",
+                "Minimum Age: 18 years and Maximum Age: 70 years"
+            ],
+            [
+                "Resident Type",
+                "Resident IndianNon-Resident India (NRI)Person of Indian Origin (PIO)"
+            ],
+            [
+                "Employment",
+                "SalariedSelf-employed"
+            ],
+            [
+                "Net Annual Income",
+                "At least Rs.5-6 lakh depending on the type of employment"
+            ],
+            [
+                "Residence",
+                "A permanent residenceA rented residence where he/she has resided for at least a year prior to applying for a loan"
+            ],
+            [
+                "Credit score",
+                "A good credit score of at least 750 or more obtained from a recognised credit bureau"
+            ]
+        ]
+    },
+    "hfm_table": {
+        "headers": [],
+        "rows": [
+            [
+                "SBI Home Loan",
+                "8.25% p.a. – 9.20% p.a.(Floating Rate)",
+                "0.35% onwards (min. Rs.2,000; max. Rs.10,000),currently NIL during the campaign period(Processing Fee)",
+                "Loan Amount At the discretion of the bank1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "HDFC Home Loans",
+                "Special Home Loan Rates for Salaried & Self Employed: 8.75% to 9.65%* p.a., Standard Home Loan Rates for Salaried & Self Employed: 9.40% to 9.95%* p.a.",
+                "0.5% or Rs.3,000, whichever is higher(Processing Fee)",
+                "Contact the bank for detailsLoan Amount1-30 YearsTenure Range",
+                "Apply Now"
+            ],
+            [
+                "Union Bank Home Loan",
+                "8.10% p.a. to 10.50% (Floating Rate) for salaried and non-salaried individuals, 8.35%",
+                "0.50% or ₹15,000 Maximum(Processing Fee)",
+                "₹ Contact the bank for detailsLoan Amount1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "PNB Housing Home Loan",
+                "8.50% p.a. onwards(Floating Rate)for up to Rs.35 lakh",
+                "Up to 0.5% of the loan amount(min 10,000 in both cases, excluding taxes)(Processing Fee)",
+                "₹ Up to 90% of the cost of the propertyLoan Amount1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "LIC HFL Home Loan",
+                "8.50% p.a.(Floating Rate)for salaried individuals for up to Rs.5 crore 8.75% p.a. for non-salaried individuals for up to Rs.5 crore",
+                "For CIBIL >= 725, Rs.50,000/- + GST and For CIBIL < 725, Rs.60,000/- + GSTFor CIBIL >= 725, 0.25% of loan amount subject to maximum of Rs.20,000/- +GSTand For CIBIL < 725, 0.30% of loan amount subject to maximum of Rs.24,000/- +GST(Processing Fee)",
+                "₹ 10L -₹ 3CrsLoan Amount5-up to 30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Axis Bank Home Loan",
+                "8.75% p.a. for salaried and 9.10% p.a. for self-employed(Fixed /Floating Rates)",
+                "Up to 1%(Processing Fee)",
+                "₹ 10L -₹ 5CrsLoan Amount1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Aditya Birla Capital Home Loan",
+                "8.60% p.a. onwards",
+                "Up to 1.00% of the loan amount + applicable tax(Processing Fee)",
+                "Contact the bank for detailsLoan Amount1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Karnataka Bank Home Loan",
+                "8.89% - 10.91% p.a. (Floating Rate)",
+                "Contact the bank for details(Processing Fee)",
+                "Up to ₹ 5CrsLoan Amount1-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "IDFC Home Loan",
+                "8.85% p.a. onwards",
+                "Up to 3%(Processing Fee)",
+                "Rs.1 lakh – Rs.5 croreLoan Amount5-30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Bank Of Baroda Home Loan",
+                "8.15% p.a. to 10.35% p.a.(Floating Rate)for both salaried and non-salaried individuals",
+                "Contact the bank for information(Processing Fee)",
+                "₹ 1L -₹ Up to 10 CroreLoan AmountUp to 30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Canara Bank Home Loan",
+                "8.15% p.a. to 11.00% p.a.",
+                "0.50% (min. Rs.1,500; max. Rs.10,000)(Processing Fee)",
+                "Rs.1 lakh – Rs.3 crore -Loan Amount30 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Kotak Mahindra Bank Home Loan",
+                "8.65% p.a. onwards for salaried and non-salaried individuals, respectively",
+                "0.5% of the loan amount(Processing Fee)",
+                "Loan Amount 10 Lakh to 10 Crore1-20 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "DBS Home Loan",
+                "Contact the Bank",
+                "₹ 10000+ taxes(Processing Fee)",
+                "Up to ₹ 5CrsLoan Amount1 - 25 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Sundaram Home Finance Limited Home Loan",
+                "Contact the Bank",
+                "Contact the bank for details(Processing Fee)",
+                "₹ 1L -₹ 4CrsLoan Amount1-25 YearsTenure Range",
+                "Enquire"
+            ],
+            [
+                "Bank of Maharashtra Home Loan",
+                "8.10% p.a. onwards",
+                "0.25%(One time fee)(Processing Fee)",
+                "Loan Amount1 - 30 YearsTenure Range",
+                "Enquire"
+            ]
+        ]
+    }
+}

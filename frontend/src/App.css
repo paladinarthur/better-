@@ -1,0 +1,481 @@
+/* Base styles */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --light-color: #ecf0f1;
+  --dark-color: #2c3e50;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --error-color: #e74c3c;
+  --border-radius: 4px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--dark-color);
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Dashboard styles */
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #777;
+  position: relative;
+}
+
+.tab-button.active {
+  color: var(--secondary-color);
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--secondary-color);
+}
+
+/* Loan Details Page */
+.loan-details-page {
+  padding: 20px;
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  color: var(--secondary-color);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 0;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.loan-details-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.loan-details-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 20px;
+}
+
+.loan-details-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+}
+
+.loan-interest-rate {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.loan-details-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 30px;
+}
+
+@media (max-width: 768px) {
+  .loan-details-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.loan-info-section h2,
+.application-form-section h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--light-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.loan-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 18px;
+}
+
+.loan-criteria-section {
+  margin-bottom: 25px;
+}
+
+.loan-criteria-section h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.loan-criteria-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.loan-criteria-section li {
+  margin-bottom: 5px;
+}
+
+/* Application Form */
+.application-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+.input-hint {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.submit-application-button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.submit-application-button:hover {
+  background-color: #2980b9;
+}
+
+.submit-application-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.application-result {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.application-result.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.application-result.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.application-result h3 {
+  margin-top: 0;
+}
+
+/* Loan Card styles */
+.loan-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.loan-card-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loan-card-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.loan-type {
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+.loan-card-body {
+  padding: 15px;
+}
+
+.loan-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.loan-detail .label {
+  color: #666;
+  font-weight: 500;
+}
+
+.loan-detail .value {
+  font-weight: 500;
+}
+
+.loan-card-footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.expand-button,
+.apply-button {
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.expand-button {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+}
+
+.apply-button {
+  background-color: var(--secondary-color);
+  border: none;
+  color: white;
+}
+
+.apply-button:hover {
+  background-color: #2980b9;
+}
+
+.loan-details-expanded {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.loan-detail-section {
+  margin-bottom: 15px;
+}
+
+.loan-detail-section h4 {
+  margin: 0 0 10px 0;
+  color: var(--primary-color);
+}
+
+.loan-detail-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.loan-detail-section li {
+  margin-bottom: 5px;
+}
+
+/* Application styles */
+.user-applications {
+  margin-top: 20px;
+}
+
+.applications-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.application-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.application-card.status-pending {
+  border-left: 5px solid var(--warning-color);
+}
+
+.application-card.status-approved {
+  border-left: 5px solid var(--success-color);
+}
+
+.application-card.status-rejected {
+  border-left: 5px solid var(--error-color);
+}
+
+.application-card.status-under_review {
+  border-left: 5px solid var(--secondary-color);
+}
+
+.application-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.application-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.application-status {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-pending .application-status {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.status-approved .application-status {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.status-rejected .application-status {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.status-under_review .application-status {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.application-details {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.ai-advice,
+.application-notes {
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+.ai-advice h4,
+.application-notes h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: var(--primary-color);
+}
+
+/* Utility classes */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+}
+
+.message {
+  text-align: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+} 
