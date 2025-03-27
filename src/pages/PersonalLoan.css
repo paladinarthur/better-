@@ -1,0 +1,134 @@
+.personal-loan-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: #333;
+}
+
+.personal-loan-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.personal-loan-content h1 {
+    color: #1a365d;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #4a5568;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.loan-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.detail-card {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.detail-card h3 {
+    color: #4a5568;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.detail-card p {
+    color: #1a365d;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.features-section,
+.eligibility-section {
+    margin-bottom: 2rem;
+}
+
+.features-section h2,
+.eligibility-section h2 {
+    color: #1a365d;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.features-section ul,
+.eligibility-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features-section li,
+.eligibility-section li {
+    color: #4a5568;
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.features-section li::before,
+.eligibility-section li::before {
+    content: "•";
+    color: #4CAF50;
+    position: absolute;
+    left: 0;
+}
+
+.apply-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.apply-button:hover {
+    background: #45a049;
+}
+
+@media (max-width: 768px) {
+    .personal-loan-container {
+        padding: 1rem;
+    }
+
+    .personal-loan-content {
+        padding: 1.5rem;
+    }
+
+    .personal-loan-content h1 {
+        font-size: 2rem;
+    }
+
+    .loan-details {
+        grid-template-columns: 1fr;
+    }
+} 

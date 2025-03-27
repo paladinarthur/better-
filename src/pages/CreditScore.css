@@ -1,0 +1,154 @@
+.credit-score-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--bg-secondary);
+}
+
+.credit-score-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.credit-score-card h2 {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.description {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.tab.active {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.tab:hover:not(.active) {
+    background-color: var(--bg-tertiary);
+}
+
+.credit-score-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.1);
+}
+
+.calculation-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+    border-radius: 6px;
+}
+
+.success-message {
+    color: #047857;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #ecfdf5;
+    border: 1px solid #6ee7b7;
+    border-radius: 6px;
+}
+
+.submit-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submit-button:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .credit-score-container {
+        padding: 1rem;
+    }
+
+    .credit-score-card {
+        padding: 1.5rem;
+    }
+
+    .calculation-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+} 

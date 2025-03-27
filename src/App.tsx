@@ -11,6 +11,11 @@ import GoldLoan from './pages/GoldLoan';
 import LearnMore from './pages/LearnMore';
 import LoanEligibility from './pages/LoanEligibility';
 import CompareGuest from './pages/CompareGuest';
+import CreditScore from './pages/CreditScore';
+import LoanPreferences from './pages/LoanPreferences';
+import LoanTypes from './pages/LoanTypes';
+import StudentLoan from './pages/StudentLoan';
+import PersonalLoan from './pages/PersonalLoan';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(Boolean(localStorage.getItem('token')));
@@ -38,6 +43,19 @@ function App() {
                                 <CompareGuest />
                         } 
                     />
+                    <Route path="/creditscore" element={<CreditScore />} />
+                    <Route path="/loan-preferences" element={
+                        <LoanPreferences 
+                            onComplete={(data) => {
+                                // This is just a placeholder function since the component
+                                // already navigates to /loan-types in its handleSubmit
+                                console.log('Loan preferences completed:', data);
+                            }} 
+                        />
+                    } />
+                    <Route path="/loan-types" element={<LoanTypes />} />
+                    <Route path="/loans/student" element={<StudentLoan />} />
+                    <Route path="/loans/personal" element={<PersonalLoan />} />
                     <Route 
                         path="/dashboard" 
                         element={

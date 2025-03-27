@@ -147,7 +147,7 @@ const CompareGuest: React.FC = () => {
             return;
         }
 
-        // If user doesn't want to sign up, proceed with comparison
+        // If user doesn't want to sign up, proceed to credit score page
         try {
             const parsedFormData = {
                 ...formData,
@@ -161,20 +161,13 @@ const CompareGuest: React.FC = () => {
                 }))
             };
 
-            const creditScore = calculateCreditScore(parsedFormData);
-            const eligibility = {
-                home: getLoanEligibility(creditScore, 'home'),
-                car: getLoanEligibility(creditScore, 'car'),
-                gold: getLoanEligibility(creditScore, 'gold')
-            };
+            // Store comparison data in localStorage for use in the credit score page
+            localStorage.setItem('comparisonData', JSON.stringify({
+                formData: parsedFormData
+            }));
 
-            navigate('/loan-eligibility', { 
-                state: { 
-                    creditScore,
-                    eligibility,
-                    userData: parsedFormData
-                } 
-            });
+            // Redirect to credit score page instead of loan eligibility
+            navigate('/creditscore');
         } catch (error) {
             console.error('Error processing comparison:', error);
         }

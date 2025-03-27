@@ -4,7 +4,7 @@ import { Building2, Briefcase, GraduationCap, Home as HomeIcon, ChevronRight, Sh
 import './Home.css';
 import processImage from '../assets/images/loan-process.jpg';
 import toolsImage from '../assets/images/financial-tools.jpg';
-import heroImage from '../assets/images/hero1.jpg';
+import heroImage from 'C:/Users/rosha/Downloads/images/betterbanking logo.png';
 
 const loanTypes = [
   {
@@ -178,13 +178,7 @@ const Home: React.FC = () => {
                 <p>Filter and sort options based on your preferences and requirements</p>
               </div>
             </div>
-            <div className="process-image">
-              <img 
-                src={processImage} 
-                alt="Loan Process Illustration"
-                className="process-illustration"
-              />
-            </div>
+           
           </div>
         </div>
       </section>
@@ -258,6 +252,72 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer Section */}
+      <footer className="footer-section">
+        <div className="container">
+          <div className="footer-content">
+            {/* Company Info */}
+            <div className="footer-column">
+              <div className="footer-logo">
+                <img src="/xenon-logo.svg" alt="Xenon Bank" />
+              </div>
+              <p className="company-description">
+               
+              </p>
+              <div className="contact-info">
+                <a href="mailto:support@betterbanking.com" className="footer-link">
+                  support@betterbanking.com
+                </a>
+                <a href="tel:+911234567890" className="footer-link">
+                  +91 1234567890
+                </a>
+              </div>
+            </div>
+
+            {/* Company Links */}
+            <div className="footer-column">
+              <h3>Company</h3>
+              <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/products">Products</Link></li>
+                <li><Link to="/why-choose-us">Why Choose Us</Link></li>
+                <li><Link to="/impact">Impact on Society</Link></li>
+                <li><Link to="/testimonials">Testimonials</Link></li>
+              </ul>
+            </div>
+
+            {/* Explore Links */}
+            <div className="footer-column">
+              <h3>Explore</h3>
+              <ul>
+                <li><Link to="/faqs">FAQs</Link></li>
+                <li><Link to="/how-it-works">How it Works</Link></li>
+                <li><Link to="/qualifications">Qualifications</Link></li>
+                <li><Link to="/tool-kits">Tool Kits</Link></li>
+                <li><Link to="/market-place">Market Place</Link></li>
+              </ul>
+            </div>
+
+            {/* Quick Links */}
+            <div className="footer-column">
+              <h3>Quick Links</h3>
+              <ul>
+                <li><Link to="/apply">Apply Now</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
+                <li><Link to="/blog">Blog</Link></li>
+                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service">Terms of Service</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <p>© Better Banking 2023, All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

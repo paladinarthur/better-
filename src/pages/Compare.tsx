@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Lock, Shield, Plus, Trash } from 'lucide-react';
 import './Compare.css';
 import { calculateCreditScore, getLoanEligibility } from '../utils/creditScore';
@@ -25,9 +24,6 @@ interface CompareFormData {
     employmentType: 'Salaried' | 'Self-Employed' | 'Unemployed' | '';
     yearsInCurrentJob: string;
     
-    // Loan Details
-    desiredLoanAmount: string;
-    
     // Previous Loans
     hasPreviousLoans: 'Yes' | 'No' | '';
     previousLoans: LoanHistory[];
@@ -37,6 +33,10 @@ interface CompareFormData {
     
     // Credit Card Usage
     avgCreditCardUsage: string;
+
+    // Credit Score
+    creditScore?: string;
+    isCalculatedScore?: boolean;
 }
 
 interface UserProfile {
@@ -46,6 +46,8 @@ interface UserProfile {
 
 const Compare: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const isAuthenticated = Boolean(localStorage.getItem('token'));
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<CompareFormData>({
         fullName: '',
@@ -54,24 +56,33 @@ const Compare: React.FC = () => {
         annualIncome: '',
         employmentType: '',
         yearsInCurrentJob: '',
-        desiredLoanAmount: '',
         hasPreviousLoans: '',
         previousLoans: [],
         loanRejectionHistory: '',
-        avgCreditCardUsage: ''
+        avgCreditCardUsage: '',
+        creditScore: '',
+        isCalculatedScore: false
     });
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [creditScore, setCreditScore] = useState<number | null>(null);
     const [hasCompletedComparison, setHasCompletedComparison] = useState(false);
     const [eligibilityData, setEligibilityData] = useState<any>(null);
+    const [showCreditScoreOptions, setShowCreditScoreOptions] = useState(false);
 
-    const totalSteps = 4;
+    const totalSteps = 3;
     const progress = (currentStep / totalSteps) * 100;
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setIsLoading(false);
+                    return;
+                }
+
+                setIsLoading(true);
                 const response = await axiosInstance.get('/api/user/details');
                 if (response.data.success && response.data.user.profile) {
                     setUserProfile({
@@ -79,8 +90,13 @@ const Compare: React.FC = () => {
                         age: response.data.user.profile.age
                     });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Error fetching user profile:', error);
+                // If token is expired, clear it and continue as guest
+                if (error.response?.status === 401) {
+                    localStorage.removeItem('token');
+                    setIsLoading(false);
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -93,12 +109,36 @@ const Compare: React.FC = () => {
         // Load saved comparison data if it exists
         const savedData = localStorage.getItem('comparisonData');
         if (savedData) {
-            const { formData: savedFormData, creditScore: savedScore, completed } = JSON.parse(savedData);
-            setFormData(savedFormData);
-            setCreditScore(savedScore);
-            setHasCompletedComparison(completed);
+            try {
+                const parsedData = JSON.parse(savedData);
+                const { formData: savedFormData, creditScore: savedScore, completed } = parsedData;
+                
+                // Only set the form data and credit score if they exist
+                if (savedFormData) {
+                    setFormData(savedFormData);
+                }
+                
+                if (savedScore) {
+                    setCreditScore(savedScore);
+                }
+                
+                // Only mark as completed if specifically set to true
+                setHasCompletedComparison(completed === true);
+            } catch (error) {
+                console.error('Error parsing saved comparison data:', error);
+                localStorage.removeItem('comparisonData');
+            }
         }
     }, []);
+
+    useEffect(() => {
+        // Check if we have a return path in the URL (after login)
+        const params = new URLSearchParams(location.search);
+        const returnPath = params.get('returnTo');
+        if (returnPath && isAuthenticated) {
+            navigate(returnPath);
+        }
+    }, [location, isAuthenticated, navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -183,20 +223,21 @@ const Compare: React.FC = () => {
                 return Boolean(
                     formData.annualIncome &&
                     formData.employmentType &&
-                    formData.yearsInCurrentJob &&
-                    formData.desiredLoanAmount
+                    formData.yearsInCurrentJob
                 );
-            case 3: // Loan History
+            case 3: // Loan History & Credit
                 if (formData.hasPreviousLoans === 'Yes') {
                     return formData.previousLoans.every(loan => 
                         loan.loanAmount && 
                         loan.emiAmount && 
                         loan.loanAge
+                    ) && Boolean(
+                        formData.loanRejectionHistory &&
+                        formData.avgCreditCardUsage
                     );
                 }
-                return formData.hasPreviousLoans === 'No' || formData.hasPreviousLoans === 'Yes';
-            case 4: // Credit History
                 return Boolean(
+                    formData.hasPreviousLoans &&
                     formData.loanRejectionHistory &&
                     formData.avgCreditCardUsage
                 );
@@ -209,7 +250,6 @@ const Compare: React.FC = () => {
     const isAmountField = (fieldName: string): boolean => {
         return [
             'annualIncome',
-            'desiredLoanAmount',
             'avgCreditCardUsage',
             'loanAmount',
             'emiAmount'
@@ -219,10 +259,10 @@ const Compare: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // Parse form data for calculation
             const parsedFormData = {
                 ...formData,
                 annualIncome: parseFormattedNumber(formData.annualIncome),
-                desiredLoanAmount: parseFormattedNumber(formData.desiredLoanAmount),
                 avgCreditCardUsage: parseFormattedNumber(formData.avgCreditCardUsage),
                 previousLoans: formData.previousLoans.map(loan => ({
                     ...loan,
@@ -231,15 +271,28 @@ const Compare: React.FC = () => {
                 }))
             };
 
-            // Calculate credit score
-            const calculatedScore = calculateCreditScore(parsedFormData);
-            setCreditScore(calculatedScore);
+            // Calculate credit score if not provided by user
+            let finalCreditScore: number;
+            if (!formData.creditScore) {
+                finalCreditScore = calculateCreditScore(parsedFormData);
+                setFormData(prev => ({
+                    ...prev,
+                    isCalculatedScore: true
+                }));
+            } else {
+                finalCreditScore = parseInt(formData.creditScore);
+                setFormData(prev => ({
+                    ...prev,
+                    isCalculatedScore: false
+                }));
+            }
+            setCreditScore(finalCreditScore);
 
             // Calculate eligibility for all loan types
             const newEligibilityData = {
-                home: getLoanEligibility(calculatedScore, 'home'),
-                car: getLoanEligibility(calculatedScore, 'car'),
-                gold: getLoanEligibility(calculatedScore, 'gold')
+                home: getLoanEligibility(finalCreditScore, 'home'),
+                car: getLoanEligibility(finalCreditScore, 'car'),
+                gold: getLoanEligibility(finalCreditScore, 'gold')
             };
 
             // Set eligibility data in state
@@ -248,24 +301,20 @@ const Compare: React.FC = () => {
             // Save comparison data to localStorage
             const comparisonData = {
                 formData: parsedFormData,
-                creditScore: calculatedScore,
-                eligibility: newEligibilityData,
+                creditScore: finalCreditScore,
                 completed: true
             };
-            
             localStorage.setItem('comparisonData', JSON.stringify(comparisonData));
+            
+            // Wait to set completed until after the data is saved
+            setTimeout(() => {
+                setHasCompletedComparison(true);
+            }, 100);
 
-            // Save to backend
-            await axiosInstance.post('/api/user/comparison', {
-                formData: parsedFormData,
-                creditScore: calculatedScore,
-                eligibility: newEligibilityData
-            });
-
-            setHasCompletedComparison(true);
-
+            // Store data in profile
+            localStorage.setItem('pendingComparisonData', JSON.stringify(parsedFormData));
         } catch (error) {
-            console.error('Error submitting comparison:', error);
+            console.error('Error submitting form:', error);
         }
     };
 
@@ -278,29 +327,87 @@ const Compare: React.FC = () => {
             annualIncome: '',
             employmentType: '',
             yearsInCurrentJob: '',
-            desiredLoanAmount: '',
             hasPreviousLoans: '',
             previousLoans: [],
             loanRejectionHistory: '',
-            avgCreditCardUsage: ''
+            avgCreditCardUsage: '',
+            creditScore: '',
+            isCalculatedScore: false
         });
         setCreditScore(null);
         setHasCompletedComparison(false);
+        setEligibilityData(null);
         setCurrentStep(1);
+        setShowCreditScoreOptions(false);
+    };
+
+    const handleSignInClick = () => {
+        // Save current path to return to after login
+        const currentPath = location.pathname + location.search;
+        navigate(`/login?returnTo=${encodeURIComponent(currentPath)}`);
+    };
+
+    const renderCreditScoreOptions = () => {
+        return (
+            <div className="credit-score-options">
+                <h2>Enter Your Credit Score</h2>
+                <div className="options-container">
+                    <div className="option-card">
+                        <h3>I know my credit score</h3>
+                        <div className="form-group">
+                            <label htmlFor="creditScore">Enter your credit score</label>
+                            <input
+                                type="number"
+                                id="creditScore"
+                                name="creditScore"
+                                value={formData.creditScore}
+                                onChange={handleChange}
+                                min="300"
+                                max="900"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="option-card">
+                        <h3>I don't know my credit score</h3>
+                        <p>We'll calculate it based on your information</p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setFormData(prev => ({
+                                    ...prev,
+                                    creditScore: '',
+                                    isCalculatedScore: true
+                                }));
+                                handleSubmit(new Event('submit') as any);
+                            }}
+                            className="calculate-button"
+                        >
+                            Calculate My Score
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     };
 
     const renderStep = () => {
+        if (showCreditScoreOptions) {
+            return renderCreditScoreOptions();
+        }
+
         switch (currentStep) {
             case 1:
                 return (
-                    <div className="form-step">
+                    <div className="step-content">
                         <h2>Basic Information</h2>
-                        {!userProfile ? (
+                        {!userProfile && (
                             <>
                                 <div className="form-group">
-                                    <label>Full Name</label>
+                                    <label htmlFor="fullName">Full Name</label>
                                     <input
                                         type="text"
+                                        id="fullName"
                                         name="fullName"
                                         value={formData.fullName}
                                         onChange={handleChange}
@@ -308,22 +415,23 @@ const Compare: React.FC = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label>Age</label>
+                                    <label htmlFor="age">Age</label>
                                     <input
-                                        type="text"
+                                        type="number"
+                                        id="age"
                                         name="age"
                                         value={formData.age}
                                         onChange={handleChange}
-                                        placeholder="0"
                                         required
                                     />
                                 </div>
                             </>
-                        ) : null}
+                        )}
                         <div className="form-group">
-                            <label>City/Region</label>
+                            <label htmlFor="cityRegion">City/Region</label>
                             <input
                                 type="text"
+                                id="cityRegion"
                                 name="cityRegion"
                                 value={formData.cityRegion}
                                 onChange={handleChange}
@@ -332,80 +440,63 @@ const Compare: React.FC = () => {
                         </div>
                     </div>
                 );
-
             case 2:
                 return (
-                    <div className="form-step">
+                    <div className="step-content">
                         <h2>Financial & Employment Details</h2>
                         <div className="form-group">
-                            <label>Annual Income</label>
-                            <div className="input-with-prefix">
-                                <span className="prefix">₹</span>
-                                <input
-                                    type="text"
-                                    name="annualIncome"
-                                    value={formData.annualIncome}
-                                    onChange={handleChange}
-                                    placeholder="0"
-                                    required
-                                />
-                            </div>
+                            <label htmlFor="annualIncome">Annual Income</label>
+                            <input
+                                type="text"
+                                id="annualIncome"
+                                name="annualIncome"
+                                value={formData.annualIncome}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
                         <div className="form-group">
-                            <label>Employment Type</label>
+                            <label htmlFor="employmentType">Employment Type</label>
                             <select
+                                id="employmentType"
                                 name="employmentType"
                                 value={formData.employmentType}
                                 onChange={handleChange}
                                 required
                             >
-                                <option value="">Select...</option>
+                                <option value="">Select employment type</option>
                                 <option value="Salaried">Salaried</option>
                                 <option value="Self-Employed">Self-Employed</option>
                                 <option value="Unemployed">Unemployed</option>
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>Years in Current Job/Business</label>
+                            <label htmlFor="yearsInCurrentJob">Years in Current Job</label>
                             <input
-                                type="text"
+                                type="number"
+                                id="yearsInCurrentJob"
                                 name="yearsInCurrentJob"
                                 value={formData.yearsInCurrentJob}
                                 onChange={handleChange}
-                                placeholder="0"
                                 required
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Desired Loan Amount</label>
-                            <div className="input-with-prefix">
-                                <span className="prefix">₹</span>
-                                <input
-                                    type="text"
-                                    name="desiredLoanAmount"
-                                    value={formData.desiredLoanAmount}
-                                    onChange={handleChange}
-                                    placeholder="0"
-                                    required
-                                />
-                            </div>
-                        </div>
                     </div>
                 );
-
             case 3:
                 return (
-                    <div className="form-step">
-                        <h2>Previous Loan History</h2>
+                    <div className="step-content">
+                        <h2>Loan History & Credit Information</h2>
                         <div className="form-group">
-                            <label>Do you have any existing loans?</label>
+                            <label htmlFor="hasPreviousLoans">Do you have any previous loans?</label>
                             <select
+                                id="hasPreviousLoans"
                                 name="hasPreviousLoans"
                                 value={formData.hasPreviousLoans}
                                 onChange={handleChange}
                                 required
                             >
-                                <option value="">Select...</option>
+                                <option value="">Select an option</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
@@ -413,149 +504,135 @@ const Compare: React.FC = () => {
 
                         {formData.hasPreviousLoans === 'Yes' && (
                             <div className="loan-history-section">
+                                <h3>Previous Loan Details</h3>
                                 {formData.previousLoans.map((loan, index) => (
                                     <div key={index} className="loan-entry">
-                                        <h3>Loan {index + 1}</h3>
-                                        <div className="loan-details-grid">
-                                            <div className="form-group">
-                                                <label>Loan Amount</label>
-                                                <div className="input-with-prefix">
-                                                    <span className="prefix">₹</span>
-                                                    <input
-                                                        type="text"
-                                                        value={loan.loanAmount}
-                                                        onChange={(e) => handleLoanHistoryChange(index, 'loanAmount', e.target.value)}
-                                                        placeholder="0"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>EMI Amount</label>
-                                                <div className="input-with-prefix">
-                                                    <span className="prefix">₹</span>
-                                                    <input
-                                                        type="text"
-                                                        value={loan.emiAmount}
-                                                        onChange={(e) => handleLoanHistoryChange(index, 'emiAmount', e.target.value)}
-                                                        placeholder="0"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Loan Age (Years)</label>
-                                                <input
-                                                    type="text"
-                                                    value={loan.loanAge}
-                                                    onChange={(e) => handleLoanHistoryChange(index, 'loanAge', e.target.value)}
-                                                    placeholder="0"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Interest Rate (%)</label>
-                                                <input
-                                                    type="text"
-                                                    value={loan.interestRate}
-                                                    onChange={(e) => handleLoanHistoryChange(index, 'interestRate', e.target.value)}
-                                                    placeholder="0"
-                                                />
-                                            </div>
+                                        <div className="loan-header">
+                                            <h4>Loan {index + 1}</h4>
+                                            {formData.previousLoans.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeLoan(index)}
+                                                    className="remove-loan"
+                                                >
+                                                    <Trash className="icon" />
+                                                </button>
+                                            )}
                                         </div>
-                                        {index > 0 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeLoan(index)}
-                                                className="remove-loan-btn"
-                                            >
-                                                <Trash size={16} /> Remove Loan
-                                            </button>
-                                        )}
+                                        <div className="form-group">
+                                            <label htmlFor={`loanAmount-${index}`}>Loan Amount</label>
+                                            <input
+                                                type="text"
+                                                id={`loanAmount-${index}`}
+                                                value={loan.loanAmount}
+                                                onChange={(e) => handleLoanHistoryChange(index, 'loanAmount', e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor={`emiAmount-${index}`}>EMI Amount</label>
+                                            <input
+                                                type="text"
+                                                id={`emiAmount-${index}`}
+                                                value={loan.emiAmount}
+                                                onChange={(e) => handleLoanHistoryChange(index, 'emiAmount', e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor={`loanAge-${index}`}>Loan Age (months)</label>
+                                            <input
+                                                type="number"
+                                                id={`loanAge-${index}`}
+                                                value={loan.loanAge}
+                                                onChange={(e) => handleLoanHistoryChange(index, 'loanAge', e.target.value)}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor={`interestRate-${index}`}>Interest Rate (%)</label>
+                                            <input
+                                                type="number"
+                                                id={`interestRate-${index}`}
+                                                value={loan.interestRate}
+                                                onChange={(e) => handleLoanHistoryChange(index, 'interestRate', e.target.value)}
+                                                required
+                                            />
+                                        </div>
                                     </div>
                                 ))}
                                 <button
                                     type="button"
                                     onClick={addNewLoan}
-                                    className="add-loan-btn"
+                                    className="add-loan"
                                 >
-                                    <Plus size={16} /> Add Another Loan
+                                    <Plus className="icon" />
+                                    Add Another Loan
                                 </button>
                             </div>
                         )}
-                    </div>
-                );
 
-            case 4:
-                return (
-                    <div className="form-step">
-                        <h2>Credit History</h2>
                         <div className="form-group">
-                            <label>Have you faced loan rejection in the past year?</label>
+                            <label htmlFor="loanRejectionHistory">Have you ever had a loan rejected?</label>
                             <select
+                                id="loanRejectionHistory"
                                 name="loanRejectionHistory"
                                 value={formData.loanRejectionHistory}
                                 onChange={handleChange}
                                 required
                             >
-                                <option value="">Select...</option>
+                                <option value="">Select an option</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
                         </div>
+
                         <div className="form-group">
-                            <label>Average Credit Card Usage (₹/month)</label>
-                            <div className="input-with-prefix">
-                                <span className="prefix">₹</span>
-                                <input
-                                    type="text"
-                                    name="avgCreditCardUsage"
-                                    value={formData.avgCreditCardUsage}
-                                    onChange={handleChange}
-                                    placeholder="0"
-                                    required
-                                />
-                            </div>
+                            <label htmlFor="avgCreditCardUsage">Average Monthly Credit Card Usage</label>
+                            <input
+                                type="text"
+                                id="avgCreditCardUsage"
+                                name="avgCreditCardUsage"
+                                value={formData.avgCreditCardUsage}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
                     </div>
                 );
-
             default:
                 return null;
         }
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div className="loading">Loading...</div>;
     }
 
-    if (hasCompletedComparison && creditScore && eligibilityData) {
+    // Allow users to see their completed comparison, but only if they have explicitly chosen to
+    if (hasCompletedComparison && creditScore !== null) {
         return (
             <div className="comparison-complete">
-                <h2>Comparison Complete</h2>
+                <h2>Your Credit Score</h2>
                 <div className="credit-score">
-                    <p>Your Credit Score</p>
                     <span>{creditScore}</span>
+                </div>
+                <div className="credit-score-info">
+                    {formData.isCalculatedScore ? (
+                        <p>This score was calculated based on your information</p>
+                    ) : (
+                        <p>This is your provided credit score</p>
+                    )}
                 </div>
                 <div className="action-buttons">
                     <button onClick={handleRecompare} className="recompare-button">
                         Start New Comparison
                     </button>
                     <button 
-                        onClick={() => {
-                            if (creditScore && eligibilityData) {
-                                const stateData = {
-                                    creditScore,
-                                    eligibility: eligibilityData,
-                                    userData: formData
-                                };
-                                console.log('Navigating with state:', stateData); // Debug log
-                                navigate('/loan-eligibility', { state: stateData });
-                            }
-                        }} 
+                        onClick={() => navigate('/loan-preferences')}
                         className="view-results-button"
                     >
-                        View Results
+                        Continue to Loan Preferences
                     </button>
                 </div>
             </div>
@@ -563,74 +640,76 @@ const Compare: React.FC = () => {
     }
 
     return (
-        <div className="compare-page">
-            <div className="loan-application-container">
-                <div className="form-header">
-                    <h1>Loan Comparison Details</h1>
-                    <p>Complete your application in just a few steps</p>
+        <div className="compare-container">
+            {!isAuthenticated && (
+                <div className="sign-in-banner">
+                    <p>
+                        <span className="sign-in-text">Sign in to save your data</span>
+                        <button onClick={handleSignInClick} className="sign-in-button">
+                            Sign In
+                        </button>
+                    </p>
                 </div>
-
-                <div className="progress-bar">
-                    <div 
-                        className="progress-fill" 
-                        style={{ width: `${progress}%` }} 
-                    />
-                    <div className="steps-indicator">
-                        {Array.from({ length: totalSteps }, (_, i) => (
-                            <div
-                                key={i}
-                                className={`step-dot ${i + 1 <= currentStep ? 'active' : ''}`}
-                                data-step={i + 1}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                <form onSubmit={handleSubmit} className="loan-form">
-                    {renderStep()}
-
-                    <div className="form-actions">
-                        {currentStep > 1 && (
-                            <button
-                                type="button"
-                                onClick={() => setCurrentStep(prev => prev - 1)}
-                                className="back-button"
-                            >
-                                <ArrowLeft size={16} /> Back
-                            </button>
-                        )}
-                        {currentStep < totalSteps ? (
-                            <button
-                                type="button"
-                                onClick={() => setCurrentStep(prev => prev + 1)}
-                                disabled={!validateCurrentStep()}
-                                className="next-button"
-                            >
-                                Next <ArrowRight size={16} />
-                            </button>
-                        ) : (
-                            <button 
-                                type="submit" 
-                                className="submit-button"
-                                disabled={!validateCurrentStep()}
-                            >
-                                Submit Comparison
-                            </button>
-                        )}
-                    </div>
-
-                    <div className="security-info">
-                        <div className="security-item">
-                            <Lock size={16} />
-                            <span>Your information is securely encrypted</span>
-                        </div>
-                        <div className="security-item">
-                            <Shield size={16} />
-                            <span>No impact to your credit score</span>
-                        </div>
-                    </div>
-                </form>
+            )}
+            
+            <div className="progress-bar">
+                <div className="progress" style={{ width: `${progress}%` }}></div>
             </div>
+
+            {/* Add a reset button if there's saved data */}
+            {localStorage.getItem('comparisonData') && (
+                <div className="reset-container">
+                    <button 
+                        type="button" 
+                        onClick={handleRecompare} 
+                        className="reset-button"
+                    >
+                        Start New Comparison
+                    </button>
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="compare-form">
+                {renderStep()}
+
+                <div className="button-group">
+                    {currentStep > 1 && !showCreditScoreOptions && (
+                        <button
+                            type="button"
+                            onClick={() => setCurrentStep(prev => prev - 1)}
+                            className="back-button"
+                        >
+                            <ArrowLeft className="icon" />
+                            Back
+                        </button>
+                    )}
+                    {currentStep < totalSteps && !showCreditScoreOptions ? (
+                        <button
+                            type="button"
+                            onClick={() => setCurrentStep(prev => prev + 1)}
+                            className="next-button"
+                            disabled={!validateCurrentStep()}
+                        >
+                            Next
+                            <ArrowRight className="icon" />
+                        </button>
+                    ) : showCreditScoreOptions ? (
+                        <button type="submit" className="submit-button">
+                            Continue
+                            <ArrowRight className="icon" />
+                        </button>
+                    ) : (
+                        <button 
+                            type="button" 
+                            onClick={() => setShowCreditScoreOptions(true)}
+                            className="submit-button"
+                        >
+                            Continue to Credit Score
+                            <ArrowRight className="icon" />
+                        </button>
+                    )}
+                </div>
+            </form>
         </div>
     );
 };

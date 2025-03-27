@@ -1,0 +1,278 @@
+.student-loan-container {
+    min-height: 100vh;
+    background-color: var(--bg-primary);
+    padding: 6rem 2rem 4rem;
+}
+
+.student-loan-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.student-loan-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.student-loan-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.student-loan-header p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.student-loan-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.loan-details {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.loan-details h2 {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.loan-features {
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.feature-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+.feature-content h3 {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.feature-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.education-types {
+    margin-top: 2.5rem;
+}
+
+.education-types h3 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+}
+
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.education-item {
+    background-color: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.education-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.education-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--accent-primary);
+    margin: 0 auto 0.75rem;
+}
+
+.education-name {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.loan-calculator {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.loan-calculator h2 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.calculator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.1);
+}
+
+.calculate-button {
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.calculate-button:hover {
+    background-color: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+.calculator-result {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.result-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.result-item {
+    background-color: var(--bg-tertiary);
+    padding: 1.25rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.result-item h4 {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.result-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.apply-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    text-decoration: none;
+}
+
+.apply-button:hover {
+    background-color: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .student-loan-container {
+        padding: 5rem 1.5rem 3rem;
+    }
+    
+    .student-loan-header h1 {
+        font-size: 2rem;
+    }
+    
+    .student-loan-header p {
+        font-size: 1rem;
+    }
+    
+    .student-loan-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .loan-details,
+    .loan-calculator {
+        padding: 1.5rem;
+    }
+    
+    .education-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+} 

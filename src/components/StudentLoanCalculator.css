@@ -1,0 +1,214 @@
+.student-loan-calculator {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.calculator-header {
+  margin-bottom: 1.5rem;
+}
+
+.calculator-header h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.calculator-header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.calculator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.1);
+}
+
+.education-level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.education-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.education-option input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.education-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.education-option input:checked + .education-card {
+  border-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 0 0 2px rgba(0, 196, 180, 0.2);
+}
+
+.education-option:hover .education-card {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.education-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+}
+
+.education-name {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.calculate-button {
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.calculate-button:hover {
+  background-color: var(--accent-secondary);
+  transform: translateY(-2px);
+}
+
+.results-container {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.results-title {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.result-item {
+  background-color: var(--bg-tertiary);
+  padding: 1.25rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.result-item h4 {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.result-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.repayment-info {
+  margin-top: 2rem;
+  background-color: var(--bg-tertiary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-primary);
+}
+
+.repayment-info h4 {
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.repayment-info p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.repayment-info ul {
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.repayment-info li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .student-loan-calculator {
+    padding: 1.5rem;
+  }
+  
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .education-level-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+} 
