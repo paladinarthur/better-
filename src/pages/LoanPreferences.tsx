@@ -23,6 +23,8 @@ const LoanPreferences: React.FC<LoanPreferencesProps> = ({ onComplete, initialDa
         preferredInterestRate: initialData?.preferredInterestRate || ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -41,45 +43,40 @@ const LoanPreferences: React.FC<LoanPreferencesProps> = ({ onComplete, initialDa
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
+        
         setIsSubmitting(true);
-
+        
+        // Save preferences
         try {
-            const parsedData = {
-                ...formData,
-                desiredLoanAmount: parseFormattedNumber(formData.desiredLoanAmount)
-            };
-
-            // Get the comparison data from localStorage
-            const comparisonData = localStorage.getItem('comparisonData');
-            if (!comparisonData) {
-                throw new Error('No comparison data found');
-            }
-
-            const { formData: savedFormData, creditScore } = JSON.parse(comparisonData);
-
-            // Combine all data
-            const completeData = {
-                ...savedFormData,
-                ...parsedData,
-                creditScore
-            };
-
-            // Store in localStorage instead of making API call
-            localStorage.setItem('loanPreferences', JSON.stringify(completeData));
-
-            // Call the onComplete callback
-            onComplete(parsedData);
-
-            // Navigate to loan types
-            navigate('/loan-types');
+            localStorage.setItem('loanPreferences', JSON.stringify(formData));
+            setSuccessMessage('Preferences saved successfully! Redirecting to loan types...');
+            console.log('Loan preferences saved. Redirecting to loan types page...');
+            
+            // Create and append loading indicator
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.innerHTML = '<div style="margin-top: 20px; text-align: center; font-weight: bold;">Redirecting in 1 second...</div>';
+            document.querySelector('.success-message')?.appendChild(loadingIndicator);
+            
+            // Use direct redirection for reliability
+            setTimeout(() => {
+                window.location.href = '/loan-types';
+            }, 1000);
         } catch (error) {
-            console.error('Error saving loan preferences:', error);
-            // You might want to show an error message to the user here
-        } finally {
+            console.error('Error saving preferences:', error);
+            setErrorMessage('Failed to save preferences. Please try again.');
             setIsSubmitting(false);
         }
+    };
+
+    const validateForm = () => {
+        // Implement form validation logic here
+        return true; // Placeholder return, actual implementation needed
     };
 
     return (
@@ -156,6 +153,18 @@ const LoanPreferences: React.FC<LoanPreferencesProps> = ({ onComplete, initialDa
                     </button>
                 </div>
             </form>
+
+            {successMessage && (
+                <div className="success-message">
+                    {successMessage}
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="error-message">
+                    {errorMessage}
+                </div>
+            )}
         </div>
     );
 };

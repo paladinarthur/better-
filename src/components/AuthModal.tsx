@@ -95,8 +95,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
 
             if (response.data?.token) {
                 localStorage.setItem('token', response.data.token);
-                setMessage(`${isLoginTab ? 'Login' : 'Signup'} successful!`);
-                onLoginSuccess();
+                
+                // If this is a new signup, set a flag for first-time users
+                if (!isLoginTab) {
+                    localStorage.setItem('isFirstTimeUser', 'true');
+                    setMessage('Signup successful! Redirecting to profile setup...');
+                    
+                    // Force redirect to profile page using window.location for signup
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 1000);
+                } else {
+                    setMessage('Login successful!');
+                    onLoginSuccess();
+                }
             }
         } catch (error) {
             console.error('Auth error:', error);

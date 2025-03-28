@@ -16,6 +16,7 @@ import LoanPreferences from './pages/LoanPreferences';
 import LoanTypes from './pages/LoanTypes';
 import StudentLoan from './pages/StudentLoan';
 import PersonalLoan from './pages/PersonalLoan';
+import BankCompare from './pages/BankCompare';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(Boolean(localStorage.getItem('token')));
@@ -77,6 +78,7 @@ function App() {
                     <Route path="/loans/gold" element={<GoldLoan />} />
                     <Route path="/about" element={<LearnMore />} />
                     <Route path="/loan-eligibility" element={<LoanEligibility />} />
+                    <Route path="/bankcompare" element={<BankCompare />} />
                 </Routes>
             </div>
         </Router>

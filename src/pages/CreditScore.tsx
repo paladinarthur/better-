@@ -19,6 +19,7 @@ const CreditScore: React.FC = () => {
     });
     const [error, setError] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -79,20 +80,24 @@ const CreditScore: React.FC = () => {
         return Math.round(score);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
         
         try {
             let creditScore;
+            // Validate inputs based on entry mode
             if (isManualEntry) {
                 if (!formData.creditScore) {
                     setError('Please enter your credit score');
+                    setLoading(false);
                     return;
                 }
                 creditScore = parseInt(formData.creditScore);
                 if (isNaN(creditScore) || creditScore < 300 || creditScore > 900) {
                     setError('Please enter a valid credit score between 300 and 900');
+                    setLoading(false);
                     return;
                 }
             } else {
@@ -100,50 +105,46 @@ const CreditScore: React.FC = () => {
                 if (!formData.monthlyIncome || !formData.savings || !formData.creditHistory || 
                     !formData.paymentHistory || !formData.creditCardUsage || !formData.creditCardLimit) {
                     setError('Please fill in all required fields');
+                    setLoading(false);
                     return;
                 }
                 creditScore = calculateCreditScore();
             }
-
-            try {
-                // Try to save credit score to backend
-                const response = await fetch('http://localhost:5000/api/user/credit-score', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify({ 
-                        creditScore,
-                        calculationData: !isManualEntry ? formData : undefined
-                    })
-                });
-
-                if (response.ok) {
-                    setSuccess('Credit score saved successfully!');
-                    // Clear any stored comparison data
-                    localStorage.removeItem('pendingComparisonData');
-                    // Redirect to loan preferences
-                    setTimeout(() => navigate('/loan-preferences'), 1500);
-                } else {
-                    throw new Error('Failed to save credit score');
-                }
-            } catch (error) {
-                // If the endpoint is not available, store in localStorage and proceed
-                console.log('Credit score endpoint not available, storing locally');
-                localStorage.setItem('userCreditScore', creditScore.toString());
-                if (!isManualEntry) {
-                    localStorage.setItem('creditScoreCalculationData', JSON.stringify(formData));
-                }
-                setSuccess('Credit score saved successfully!');
-                // Clear any stored comparison data
-                localStorage.removeItem('pendingComparisonData');
-                // Redirect to loan preferences
-                setTimeout(() => navigate('/loan-preferences'), 1500);
+            
+            // Save credit score to localStorage
+            localStorage.setItem('userCreditScore', creditScore.toString());
+            if (!isManualEntry) {
+                localStorage.setItem('creditScoreCalculationData', JSON.stringify(formData));
             }
+            
+            // Update comparison data
+            const comparisonData = localStorage.getItem('comparisonData');
+            if (comparisonData) {
+                const parsedData = JSON.parse(comparisonData);
+                localStorage.setItem('comparisonData', JSON.stringify({
+                    ...parsedData,
+                    creditScore
+                }));
+            }
+            
+            // Show success and prepare for redirect
+            setSuccess('Credit score assessed! Redirecting to loan preferences...');
+            console.log('Credit score assessed. Redirecting to loan preferences page...');
+            
+            // Create visual indicator for redirection
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.innerHTML = '<div style="margin-top: 20px; text-align: center; font-weight: bold;">Redirecting in 1 second...</div>';
+            document.querySelector('.success-message')?.appendChild(loadingIndicator);
+            
+            // Use direct redirection for reliability
+            setTimeout(() => {
+                window.location.href = '/loan-preferences';
+            }, 1000);
+            
         } catch (error) {
             console.error('Error:', error);
-            setError('An error occurred while saving your credit score');
+            setError('An error occurred while processing your credit score');
+            setLoading(false);
         }
     };
 
