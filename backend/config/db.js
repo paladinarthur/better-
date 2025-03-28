@@ -2,11 +2,23 @@ const mongoose = require('mongoose');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Load environment variables from backend/.env
+const envPath = path.join(__dirname, '../.env');
+console.log('Looking for .env file at:', envPath);
+dotenv.config({ path: envPath });
+
+// Verify MONGO_URI is loaded
+console.log('MONGO_URI exists:', !!process.env.MONGO_URI);
 
 // MongoDB connection string
-const MONGO_URI = 'mongodb+srv://saransankar885:Saran885@cluster0.4glxw.mongodb.net/loan-comparison?retryWrites=true&w=majority';
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error('Environment variables not loaded properly');
+  console.error('Current working directory:', process.cwd());
+  console.error('__dirname:', __dirname);
+  throw new Error('MONGO_URI environment variable is not defined');
+}
 
 // MongoDB connection options
 const options = {
@@ -42,7 +54,7 @@ const connectDB = async () => {
     mongoose.connection.on('disconnected', () => {
       console.log('MongoDB disconnected, attempting to reconnect...');
       isConnected = false;
-      setTimeout(connectDB, 5000); // Try to reconnect after 5 seconds
+      setTimeout(connectDB, 5000);
     });
     
     process.on('SIGINT', async () => {
@@ -55,8 +67,6 @@ const connectDB = async () => {
   } catch (error) {
     console.error('MongoDB connection error:', error);
     isConnected = false;
-    // Retry connection after 5 seconds
-    console.log('Retrying connection in 5 seconds...');
     setTimeout(connectDB, 5000);
     throw error;
   }

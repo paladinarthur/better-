@@ -1,0 +1,144 @@
+{
+    "Car Loan Details": [
+        {
+            "Bank Name": "State Bank\n  of India",
+            "Interest Rate (p.a.)": "9.10% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Indian\n  Overseas Bank",
+            "Interest Rate (p.a.)": "8.60% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "IDFC First\n  Bank",
+            "Interest Rate (p.a.)": "9.99% p.a. onwards",
+            "Processing Fee": "Up to 10\n  years"
+        },
+        {
+            "Bank Name": "Jammu and Kashmir\n  Bank",
+            "Interest Rate (p.a.)": "RLLR +\n  0.75% p.a. onwards (floating)RLLR +\n  0.25% p.a. onwards (fixed)",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Canara Bank",
+            "Interest Rate (p.a.)": "8.45% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "HDFC Bank",
+            "Interest Rate (p.a.)": "9.40% p.a. onwards (Rack Interest)",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "IndusInd\n  Bank",
+            "Interest Rate (p.a.)": "8.00% p.a.\n  onwards",
+            "Processing Fee": "Up to 5\n  years"
+        },
+        {
+            "Bank Name": "ICICI Bank",
+            "Interest Rate (p.a.)": "9.10% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Karur Vysya\n  Bank",
+            "Interest Rate (p.a.)": "9.35% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "South Indian\n  Bank",
+            "Interest Rate (p.a.)": "8.75% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Kotak\n  Mahindra Bank",
+            "Interest Rate (p.a.)": "7.70% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "IDBI Bank",
+            "Interest Rate (p.a.)": "8.80% p.a.\n  onwards (floating)9.20% p.a.\n  onwards (fixed)",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Yes Bank",
+            "Interest Rate (p.a.)": "Contact the bank",
+            "Processing Fee": "Up to 8\n  years"
+        },
+        {
+            "Bank Name": "Karnataka\n  Bank",
+            "Interest Rate (p.a.)": "8.88% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Federal Bank\n  of India",
+            "Interest Rate (p.a.)": "9.00% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Equitas\n  Small Finance Bank",
+            "Interest Rate (p.a.)": "9.00% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Punjab\n  National Bank",
+            "Interest Rate (p.a.)": "Floating:\n  8.50% p.a. onward Fixed:\n  9.50% p.a. onwards",
+            "Processing Fee": "Up to 7 years"
+        },
+        {
+            "Bank Name": "Union Bank\n  of India",
+            "Interest Rate (p.a.)": "8.40% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Axis Bank",
+            "Interest Rate (p.a.)": "9.40% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Bank of\n  Baroda",
+            "Interest Rate (p.a.)": "Fixed: 9.05%\n  p.a. onwardsFloating:\n  9.15% p.a. onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Tamilnad\n  Mercantile Bank",
+            "Interest Rate (p.a.)": "10.50% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Bank of\n  India",
+            "Interest Rate (p.a.)": "8.75% p.a. onwards",
+            "Processing Fee": "Up to 7 years"
+        },
+        {
+            "Bank Name": "Bank of\n  Maharashtra",
+            "Interest Rate (p.a.)": "8.45% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Central\n  Bank of India",
+            "Interest Rate (p.a.)": "8.60% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Indian Bank",
+            "Interest Rate (p.a.)": "8.50% p.a.\n  onwards",
+            "Processing Fee": "Up to 7 years"
+        },
+        {
+            "Bank Name": "UCO Bank",
+            "Interest Rate (p.a.)": "8.35% p.a.\n  onwards",
+            "Processing Fee": "Up to 7\n  years"
+        },
+        {
+            "Bank Name": "Bandhan Bank",
+            "Interest Rate (p.a.)": "9.47% p.a. onwards",
+            "Processing Fee": "Up to 7 years"
+        }
+    ],
+    "Eligibility Criteria": [
+        "Age: 18 years and above (maximum age: 75 years).",
+        "Minimum net income: ₹20,000 per month.",
+        "At least one year of employment with the current employer."
+    ]
+}

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Building2, Briefcase, GraduationCap, Home as HomeIcon, ChevronRight, Shield, Users, Calculator, Clock, Award, CheckCircle } from 'lucide-react';
 import './Home.css';
 import processImage from '../assets/images/loan-process.jpg';
 import toolsImage from '../assets/images/financial-tools.jpg';
-import heroImage from 'C:/Users/rosha/Downloads/images/betterbanking logo.png';
+import heroImage from '../assets/images/hero1.jpg';
 
 const loanTypes = [
   {
@@ -38,6 +38,8 @@ const loanTypes = [
 ];
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="home-container">
       {/* Hero Section */}
@@ -45,10 +47,10 @@ const Home: React.FC = () => {
         <div className="hero-background" style={{ backgroundImage: `url(${heroImage})` }}></div>
         <div className="container">
           <div className="hero-content">
-            <h1>Your Path to Financial Freedom Starts Here</h1>
-            <p>Compare and find the best loan options tailored to your needs</p>
+            <h1>Welcome to Loan Comparison</h1>
+            <p>Find the best loan rates for your needs</p>
             <div className="hero-buttons">
-              <Link to="/compare" className="btn-compare">
+              <button onClick={() => navigate('/loans')} className="btn-compare">
                 <div id="container-stars">
                   <div id="stars"></div>
                 </div>
@@ -61,7 +63,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <strong>COMPARE LOANS</strong>
-              </Link>
+              </button>
               <Link to="/about" className="glow-button">LEARN MORE</Link>
             </div>
           </div>

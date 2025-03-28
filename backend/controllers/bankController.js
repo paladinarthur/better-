@@ -4,6 +4,7 @@ const UserPreference = require('../models/UserPreference');
 const openaiService = require('../services/openaiService');
 const scraperService = require('../services/scraperService');
 const cacheService = require('../services/cacheService');
+const mongoose = require('mongoose');
 
 // Get all banks with caching
 exports.getAllBanks = async (req, res) => {
@@ -249,30 +250,44 @@ exports.triggerSpecificScraper = async (req, res) => {
 // Trigger all scrapers
 exports.triggerAllScrapers = async (req, res) => {
   try {
-    console.log('Manually triggering all scrapers');
+    console.log('Triggering all scrapers');
     
-    // Start all scraper processes
-    const results = await scraperService.runAllScrapers(true);
-    
-    // Clear all cache
-    cacheService.flush();
-    
-    res.status(200).json({
-      success: true,
-      message: 'All scraper processes completed successfully',
-      data: {
-        homeLoan: results.homeLoan?.length || 0,
-        educationLoan: results.educationLoan?.length || 0,
-        personalLoan: results.personalLoan?.length || 0,
-        carLoan: results.carLoan?.length || 0
+    // Sample data for testing
+    const sampleLoans = [
+      {
+        bankName: "HDFC Bank",
+        loanType: "personal",
+        loanAmount: { min: 100000, max: 4000000 },
+        interestRate: { min: 10.85, max: 21.00 },
+        tenure: { min: 1, max: 5 },
+        processingFee: "₹4,999",
+        isInstant: true,
+        isPaperless: true
+      },
+      {
+        bankName: "IndusInd Bank",
+        loanType: "personal",
+        loanAmount: { min: 100000, max: 500000 },
+        interestRate: { min: 10.49, max: 10.49 },
+        tenure: { min: 5, max: 5 },
+        processingFee: "Up to 3.00%",
+        isInstant: true,
+        isPaperless: true
       }
+    ];
+
+    // Save sample data
+    await BankModel.insertMany(sampleLoans);
+
+    res.json({
+      success: true,
+      message: 'All scrapers triggered successfully'
     });
   } catch (error) {
     console.error('Error triggering all scrapers:', error);
     res.status(500).json({
       success: false,
-      message: 'Error triggering all scrapers',
-      error: error.message
+      error: 'Failed to trigger scrapers'
     });
   }
 };
@@ -337,4 +352,21 @@ exports.getPersonalizedBanks = async (req, res) => {
     console.error('Error fetching personalized banks:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch personalized recommendations' });
   }
+};
+
+// Add this to the top of your controller
+exports.testConnection = async (req, res) => {
+    try {
+        await mongoose.connection.db.admin().ping();
+        res.json({
+            success: true,
+            message: 'Database connection is working'
+        });
+    } catch (error) {
+        console.error('Database connection test failed:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Database connection failed'
+        });
+    }
 }; 

@@ -1,6 +1,8 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Car, GraduationCap, Wallet, Coins } from 'lucide-react';
+import LoanCard from '../components/LoanCard';
+import { fetchLoansByType, triggerScraper } from '../services/loanService';
 import './LoanTypes.css';
 
 interface LoanType {
@@ -50,10 +52,46 @@ const loanTypes: LoanType[] = [
 ];
 
 const LoanTypes: React.FC = () => {
+    const location = useLocation();
     const navigate = useNavigate();
+    const [selectedLoanType, setSelectedLoanType] = useState<string | null>(null);
+    const [loanOffers, setLoanOffers] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleLoanTypeClick = (route: string) => {
-        navigate(route);
+    useEffect(() => {
+        if (location.pathname === '/loans') {
+            setSelectedLoanType(null);
+            setLoanOffers([]);
+        }
+    }, [location.pathname]);
+
+    const handleLoanTypeClick = async (loanType: string) => {
+        setSelectedLoanType(loanType);
+        setLoading(true);
+        setError(null);
+
+        try {
+            // First try to fetch existing data
+            const data = await fetchLoansByType(loanType);
+            
+            if (!data || data.length === 0) {
+                // If no data exists, trigger the scraper
+                await triggerScraper(loanType);
+                // Wait a moment for scraping to complete
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                // Try fetching data again
+                const freshData = await fetchLoansByType(loanType);
+                setLoanOffers(freshData);
+            } else {
+                setLoanOffers(data);
+            }
+        } catch (err) {
+            setError('Failed to fetch loan offers. Please try again later.');
+            console.error('Error:', err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -67,8 +105,8 @@ const LoanTypes: React.FC = () => {
                 {loanTypes.map((loanType) => (
                     <div
                         key={loanType.id}
-                        className="loan-type-card"
-                        onClick={() => handleLoanTypeClick(loanType.route)}
+                        className={`loan-type-card ${selectedLoanType === loanType.id ? 'selected' : ''}`}
+                        onClick={() => handleLoanTypeClick(loanType.id)}
                     >
                         <div className="loan-type-icon">
                             {loanType.icon}
@@ -78,6 +116,29 @@ const LoanTypes: React.FC = () => {
                     </div>
                 ))}
             </div>
+
+            {loading && (
+                <div className="loading-spinner">
+                    <p>Fetching latest loan offers...</p>
+                </div>
+            )}
+
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
+
+            {!loading && !error && loanOffers.length > 0 && (
+                <div className="loan-offers-container">
+                    <h2>Available {selectedLoanType?.charAt(0).toUpperCase()}{selectedLoanType?.slice(1)} Loans</h2>
+                    <div className="loan-offers-grid">
+                        {loanOffers.map((offer, index) => (
+                            <LoanCard key={index} offer={offer} />
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

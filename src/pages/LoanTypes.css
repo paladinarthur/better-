@@ -100,4 +100,35 @@
     .loan-types-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.loan-offers-container {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.loan-offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.loading-spinner {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    background-color: #f8d7da;
+    border-radius: 4px;
+}
+
+.loan-type-card.selected {
+    border-color: #00bfa5;
+    background-color: #e0f2f1;
 } 

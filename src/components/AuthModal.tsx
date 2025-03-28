@@ -31,15 +31,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
         // Test server connection
         const testConnection = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/health');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/health`);
                 console.log('Server connection test:', response.data);
             } catch (error) {
-                console.error('Server connection test failed:', error);
+                console.warn('Server health check failed - this is expected during development');
             }
         };
         
-        testConnection();
-    }, []);
+        if (isOpen) {
+            testConnection();
+        }
+    }, [isOpen]);
 
     // Form validation
     const validateForm = (): boolean => {
@@ -173,7 +175,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
                             value={formData.email}
                             onChange={handleInputChange}
                             disabled={isLoading}
-                            required 
+                            required
+                            autoComplete="email"
                         />
                     </div>
                     <div className="form-group">
@@ -185,7 +188,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
                             value={formData.password}
                             onChange={handleInputChange}
                             disabled={isLoading}
-                            required 
+                            required
+                            autoComplete="current-password"
                         />
                     </div>
                     <button 

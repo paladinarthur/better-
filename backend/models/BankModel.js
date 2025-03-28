@@ -1,22 +1,40 @@
 const mongoose = require('mongoose');
 
 const bankSchema = new mongoose.Schema({
-  bankName: String,
-  loanType: String,
-  interestRate: Number,
-  minTenure: Number,
-  maxTenure: Number,
-  minLoanAmount: Number,
-  maxLoanAmount: Number,
+  bankName: {
+    type: String,
+    required: true
+  },
+  loanType: {
+    type: String,
+    required: true,
+    lowercase: true
+  },
+  loanAmount: {
+    min: Number,
+    max: Number
+  },
+  interestRate: {
+    min: Number,
+    max: Number
+  },
+  tenure: {
+    min: Number,
+    max: Number
+  },
   processingFee: String,
+  isInstant: Boolean,
+  isPaperless: Boolean,
   eligibilityCriteria: [String],
   requiredDocuments: [String],
   benefits: [String],
   specialFeatures: [String],
   sourceUrl: String,
   originalDataId: mongoose.Schema.Types.ObjectId,
+}, {
+  timestamps: true
 });
 
-const BankModel = mongoose.model('BankModel', bankSchema);
+const BankModel = mongoose.model('Bank', bankSchema);
 
 module.exports = BankModel; 

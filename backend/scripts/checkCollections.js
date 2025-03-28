@@ -1,12 +1,30 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+
+// Load environment variables
+const envPath = path.join(__dirname, '../.env');
+console.log('Looking for .env file at:', envPath);
+require('dotenv').config({ path: envPath });
+
 const RawLoanData = require('../models/RawLoanData');
 const BankModel = require('../models/BankModel');
 
 const checkCollections = async () => {
   try {
     console.log('Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGO_URI);
+    console.log('Current directory:', process.cwd());
+    console.log('__dirname:', __dirname);
+    console.log('MONGO_URI:', process.env.MONGO_URI ? 'Found' : 'Not found');
+    
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI environment variable is not set');
+    }
+
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    
     console.log('Connected to MongoDB successfully');
     
     // Check RawLoanData collection
